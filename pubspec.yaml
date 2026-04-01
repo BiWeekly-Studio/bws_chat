@@ -1,0 +1,43 @@
+name: bws_chat
+description: "A reusable Flutter chat module for dating apps with Firebase backend. Supports 1:1 and group chat, photo sending, read receipts, typing indicators, online/offline status, and push notifications."
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: ^3.11.4
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^2.6.1
+
+  # Firebase
+  cloud_firestore: ^5.6.6
+  firebase_auth: ^5.5.2
+  firebase_storage: ^12.4.4
+  firebase_messaging: ^15.2.4
+  firebase_database: ^11.3.4
+
+  # Media
+  image_picker: ^1.1.2
+  cached_network_image: ^3.4.1
+  flutter_image_compress: ^2.3.0
+  flutter_local_notifications: ^18.0.1
+
+  # Utilities
+  intl: ^0.20.2
+  uuid: ^4.5.1
+  path: ^1.9.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  # To add assets to your package, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
