@@ -2,6 +2,8 @@
 
 A reusable Flutter chat module for dating apps with a Firebase backend and KakaoTalk-inspired UI. Built by BiWeekly Studio for seamless 1:1 and group messaging experiences.
 
+> **English** | [한국어](README.ko.md)
+
 ## Features
 
 - **1:1 and Group Chat**: Support for one-to-one conversations and multi-participant group chats
