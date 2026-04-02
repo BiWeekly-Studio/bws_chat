@@ -201,9 +201,8 @@ class ChatService {
   }) async {
     final now = Timestamp.now();
 
-    // Fetch messages not yet read by this user (excluding own messages).
+    // Fetch messages not yet read by this user.
     final unread = await _messages(roomId)
-        .where(ChatFields.senderId, isNotEqualTo: userId)
         .where('${ChatFields.readBy}.$userId', isNull: true)
         .get();
 

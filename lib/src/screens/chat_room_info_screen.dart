@@ -53,9 +53,8 @@ class _ChatRoomInfoScreenState extends ConsumerState<ChatRoomInfoScreen>
     final currentUserId = ref.watch(currentUserIdProvider);
     final roomsAsync = ref.watch(chatRoomsProvider);
 
-    final room = roomsAsync.value
-        ?.where((r) => r.id == widget.roomId)
-        .firstOrNull;
+    final _matchedRooms = roomsAsync.value?.where((r) => r.id == widget.roomId).toList();
+    final room = (_matchedRooms != null && _matchedRooms.isNotEmpty) ? _matchedRooms.first : null;
 
     if (room == null) {
       return Scaffold(
@@ -117,14 +116,13 @@ class _ChatRoomInfoScreenState extends ConsumerState<ChatRoomInfoScreen>
 
   Widget _buildOneToOneLayout(
       ChatRoom room, String currentUserId, ChatConfig config) {
-    final otherId = room.participantIds
-        .where((id) => id != currentUserId)
-        .firstOrNull;
+    final _otherIds = room.participantIds.where((id) => id != currentUserId).toList();
+    final otherId = _otherIds.isNotEmpty ? _otherIds.first : null;
     final other = otherId != null ? room.participantProfiles[otherId] : null;
     final isOnlineAsync = otherId != null
         ? ref.watch(userPresenceProvider(otherId))
         : null;
-    final isOnline = isOnlineAsync?.value ?? other?.isOnline ?? false;
+    final isOnline = isOnlineAsync?.valueOrNull ?? other?.isOnline ?? false;
 
     return ListView(
       children: [
@@ -529,7 +527,7 @@ class _ParticipantTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final presenceAsync = ref.watch(userPresenceProvider(user.uid));
-    final isOnline = presenceAsync.value ?? user.isOnline;
+    final isOnline = presenceAsync.valueOrNull ?? user.isOnline;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

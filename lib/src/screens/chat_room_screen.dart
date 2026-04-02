@@ -137,14 +137,16 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen>
   }
 
   Future<void> _clearTypingStatus() async {
-    final userId = ref.read(currentUserIdProvider);
-    if (userId.isEmpty || !_isTyping) return;
-    _isTyping = false;
-    await ref.read(chatServiceProvider).updateTypingStatus(
-          roomId: widget.roomId,
-          userId: userId,
-          isTyping: false,
-        );
+    try {
+      final userId = ref.read(currentUserIdProvider);
+      if (userId.isEmpty || !_isTyping) return;
+      _isTyping = false;
+      await ref.read(chatServiceProvider).updateTypingStatus(
+            roomId: widget.roomId,
+            userId: userId,
+            isTyping: false,
+          );
+    } catch (_) {}
   }
 
   // ---------------------------------------------------------------------------
@@ -246,7 +248,8 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen>
     final messagesAsync = ref.watch(paginatedMessagesProvider(widget.roomId));
     final roomsAsync = ref.watch(chatRoomsProvider);
 
-    final room = roomsAsync.value?.where((r) => r.id == widget.roomId).firstOrNull;
+    final _matchedRooms = roomsAsync.value?.where((r) => r.id == widget.roomId).toList();
+    final room = (_matchedRooms != null && _matchedRooms.isNotEmpty) ? _matchedRooms.first : null;
     final participantCount = room?.participantIds.length ?? 0;
 
     // Auto-scroll when new messages arrive
@@ -298,12 +301,11 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen>
     dynamic room,
   ) {
     // Check if any participant (excluding current user) is online
-    final otherId = room?.participantIds
-        .where((id) => id != currentUserId)
-        .firstOrNull;
+    final _otherIds = room?.participantIds.where((id) => id != currentUserId).toList() ?? [];
+    final otherId = _otherIds.isNotEmpty ? _otherIds.first : null;
     final otherOnlineAsync =
         otherId != null ? ref.watch(userPresenceProvider(otherId)) : null;
-    final isOtherOnline = otherOnlineAsync?.value ?? false;
+    final isOtherOnline = otherOnlineAsync?.valueOrNull ?? false;
     final isGroup = (room?.participantIds.length ?? 0) > 2;
 
     return AppBar(
