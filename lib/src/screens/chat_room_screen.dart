@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../config/chat_config.dart';
+import '../models/chat_room.dart';
 import '../models/message.dart';
 import '../providers/chat_providers.dart';
 import '../utils/constants.dart';
@@ -441,7 +442,7 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen>
                 showTime: showTime,
                 showAvatar: !isConsecutive,
                 showName: !isConsecutive &&
-                    (room?.type?.name == 'group' ||
+                    (room?.type == ChatRoomType.group ||
                         (room?.participantIds.length ?? 2) > 2),
               ),
           ],
