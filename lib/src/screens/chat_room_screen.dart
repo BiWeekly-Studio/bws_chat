@@ -699,7 +699,7 @@ class _SentMessageBubble extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (showTime)
+          if (showTime || (displayUnread != null && config.readReceiptsEnabled))
             Padding(
               padding: const EdgeInsets.only(right: 4, bottom: 2),
               child: Column(
@@ -715,13 +715,14 @@ class _SentMessageBubble extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                  Text(
-                    ChatDateFormatter.formatMessageTime(message.createdAt),
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: Color(0xFF9E9E9E),
+                  if (showTime)
+                    Text(
+                      ChatDateFormatter.formatMessageTime(message.createdAt),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF9E9E9E),
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
